@@ -7,6 +7,14 @@ public class Location {
     private String name;
     private ArrayList<Enemy> enemyList;
 
+    public ArrayList<Enemy> getEnemyList() {
+        return this.enemyList;
+    }
+
+    public void setEnemyList(ArrayList<Enemy> enemyList) {
+        this.enemyList = enemyList;
+    }
+
 
     public String getName() {
         return this.name;

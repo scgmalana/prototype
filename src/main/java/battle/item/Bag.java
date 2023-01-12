@@ -5,17 +5,17 @@ import java.util.*;
 import battle.item.equipment.Equipment;
 
 public class Bag {
-    private static final HashMap<String, Item> itemList = new HashMap<>();
-    private static final HashMap<String, Equipment> equipmentList = new HashMap<>();
-    private static final HashMap<String, Consumables> consumableList =  new HashMap<>();
+    private static final ArrayList<Item> itemList = new ArrayList<>();
+    private static final ArrayList<Equipment> equipmentList = new ArrayList<>();
+    private static final ArrayList<Consumables> consumableList =  new ArrayList<>();
 
-    public static Map<String, Item> getItemList() {
+    public static ArrayList<Item> getItemList() {
         return itemList;
     }
-    public static Map<String, Equipment> getEquipmentList() {
+    public static ArrayList<Equipment> getEquipmentList() {
         return equipmentList;
     }
-    public static Map<String, Consumables> getConsumableList() {
+    public static ArrayList<Consumables> getConsumableList() {
         return consumableList;
     }
 
@@ -26,9 +26,13 @@ public class Bag {
     }
 
     public void pickUpItem(Item targetItem){
-        Bag.itemList.put(targetItem.getName(), targetItem);
-    }
-    public void pickUpEquipment(Equipment targetEquipment){
-        Bag.equipmentList.put(targetEquipment.getName(), targetEquipment);
+        Bag.itemList.add(targetItem);
+
+        if(targetItem instanceof Equipment){
+            Bag.equipmentList.add((Equipment)(targetItem));
+        }
+        if(targetItem instanceof Consumables){
+            Bag.consumableList.add((Consumables)(targetItem));
+        }
     }
 }

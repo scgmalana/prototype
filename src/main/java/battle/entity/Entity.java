@@ -82,6 +82,7 @@ public abstract class Entity {
         this.currentSP = this.baseStats.getMaxSP();
         this.effectiveStats = this.baseStats;
         this.modifiers = new Modifiers();
+        this.totalStats = baseStats;
         this.skillList = new ArrayList<>();
     }
 
@@ -146,7 +147,7 @@ public abstract class Entity {
         int damage = Skills.damageCalculation(this.getEffectiveStats().getAttack(), targetEntity.getEffectiveStats().getDefense(), 0.8, 0.5, targetEntity.getGuardActive());
         targetEntity.setCurrentHP(healthCalculation(damage*-1, targetEntity));
 
-        System.out.printf("Wow! %s did %d damage to %s", this.getName(), damage, targetEntity.getName());
+        System.out.printf("\nWow! %s did %d damage to %s\n", this.getName(), damage, targetEntity.getName());
     }
 
     public void guard(){
@@ -164,7 +165,7 @@ public abstract class Entity {
     public void displaySkillList(){
         int listNumber = 1;
         for(Skills skills: this.skillList){
-            System.out.printf("%d. %s", listNumber, skills.getName());
+            System.out.printf("%d. %s %n", listNumber, skills.getName());
             listNumber++;
         }
     }

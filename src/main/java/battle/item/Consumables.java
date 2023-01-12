@@ -24,6 +24,5 @@ public class Consumables extends Item{
         super(name, description);
         this.restoredHP = restoredHP;
         this.restoredSP = restoredSP;
-    }
-    
+    } 
 }

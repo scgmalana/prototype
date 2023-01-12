@@ -31,11 +31,11 @@ public class Enemy extends Entity {
         this.randomWeight = randomWeight;
     }
     
-    public Enemy(String name, String description, String locationName, int randomWeight, int maxHP, int maxSP, int attack, int defense, int speed) {
+    public Enemy(String name, String description, Location location, int randomWeight, int maxHP, int maxSP, int attack, int defense, int speed) {
         super(name, maxHP, maxSP, attack, defense, speed);
         this.randomWeight = randomWeight;
         this.description = description;
-        this.location = new Location(locationName);
+        this.location = location;
     }
 
     @Override

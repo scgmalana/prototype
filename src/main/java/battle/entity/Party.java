@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Party {
     private ArrayList<Entity> entityList;
-    private int totalPartyHP;
+    private int totalPartyHP = 0;
 
     public int getTotalPartyHP() {
         return this.totalPartyHP;
@@ -22,6 +22,14 @@ public class Party {
 
     public Party(int size){
         entityList = new ArrayList<>(size);
+    }
+
+    public void calculateTotalPartyHP(){
+        totalPartyHP = 0;
+        
+        for(Entity entity: entityList){
+            totalPartyHP += entity.getCurrentHP();
+        }
     }
 
     public void healParty(int amountHealed){

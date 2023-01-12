@@ -7,13 +7,15 @@ import battle.entity.characters.*;
 import battle.location.Location;
 
 public class Battle {
+    Scanner sc = new Scanner(System.in);
+
     public Battle(Party playerParty, Location battleLocation){
         boolean battleFinished = false;
         Location.EnemyList<Enemy> locationEnemyList = battleLocation.generateEnemyList();
         Party enemyParty = new Party(4);
         ArrayList<Entity> battleEntities = new ArrayList<>();
         
-        for(int index = 0 ; index <5; index++){
+        for(int index = 0 ; index <4; index++){
             Enemy enemy = locationEnemyList.next();
             enemyParty.getPartyList().add(enemy);
         }
@@ -26,7 +28,17 @@ public class Battle {
         }
 
         do{
+            playerParty.calculateTotalPartyHP();
+            enemyParty.calculateTotalPartyHP();
+
+            System.out.println(playerParty.getTotalPartyHP());
+            System.out.println(enemyParty.getTotalPartyHP());
+
+            if(playerParty.getTotalPartyHP() == 0 || enemyParty.getTotalPartyHP() <= 0){
+                battleFinished = true;
+            }
             turn(battleEntities, playerParty, enemyParty);
+            System.out.println(battleFinished);
         }
         while(!battleFinished);
     }
@@ -52,20 +64,58 @@ public class Battle {
         }
     }
 
-    private void decisionMaking(Entity actingEntity){
-        System.out.println("What do you want to do?");
+    private void deadEntity(ArrayList<Entity> battleEntities, Entity targetEntity){
+        battleEntities.remove(targetEntity);
+    }
+
+    private void decisionMaking(PartyMembers actingPartyMember, Party enemyParty){
+        System.out.println("What do you want to do? Input the number beside the action");
+        System.out.println("1. Attack");
+        System.out.println("2. Defend");
+        System.out.println("3. Use Skills");
+        System.out.println("4. Use Items");
+
+        String decision = sc.nextLine();
+        switch(decision){
+            case "1":
+                actingPartyMember.attack(actingPartyMember.selectTarget(enemyParty));
+                break;
+            case "2":
+                actingPartyMember.guard();
+                break;
+            case "3":
+                actingPartyMember.displaySkillList();
+                break;
+            case "4":
+                actingPartyMember.displayItemList();
+                break;
+            default:
+                actingPartyMember.attack(actingPartyMember.selectTarget(enemyParty));
+                break;
+        }
     }
 
     private void turn(ArrayList<Entity> battleEntities, Party playerParty, Party enemyParty){
-        speedSort(battleEntities);
-        for(int index = 0; index <= battleEntities.size(); index++){
-                Entity actingEntity = battleEntities.get(index);
-                if(actingEntity instanceof PartyMembers){
-                    decisionMaking(actingEntity);
-                }
-                else{
-                    actingEntity.attack(actingEntity.selectTarget(playerParty));
-                }
+        int listNumber = 1;
+        for(Entity entity: battleEntities){
+            System.out.printf("%d. %s %n", listNumber, entity.getName());
+            listNumber++;
         }
+        speedSort(battleEntities);
+        for(int index = 0; index < battleEntities.size(); index++){
+            Entity actingEntity = battleEntities.get(index);
+            if(actingEntity.getCurrentHP() == 0){
+                deadEntity(battleEntities, actingEntity);
+                break;
+            }
+
+            if(actingEntity instanceof PartyMembers){
+                decisionMaking((PartyMembers)(actingEntity), enemyParty);
+            }
+            else{
+                actingEntity.attack(actingEntity.selectTarget(playerParty));
+            }
+        }
+        return;
     }
 }

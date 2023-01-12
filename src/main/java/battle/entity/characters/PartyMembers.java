@@ -15,7 +15,7 @@ public class PartyMembers extends Entity {
     private ArrayList<Equipment> equipmentList;
     private Stats bonusStats;
     protected static Party travellingParty = new Party();
-    protected static Party activeParty =  new Party(4);
+    public static Party activeParty = new Party(4);
 
     public Armor getHeadArmor() {
         return this.headArmor;
@@ -129,9 +129,15 @@ public class PartyMembers extends Entity {
         PartyMembers.activeParty.getPartyList().remove(this);
     }
 
-    
-    public void useConsumable(String targetConsumableName, PartyMembers targetPartyMember){
-        if(!Bag.getConsumableList().containsKey(targetConsumableName)){
+    public void displayItemList(){
+        int listNumber = 1;
+        for(Item item: Bag.getItemList()){
+            System.out.printf("%d. %s %n", listNumber, item.getName());
+        }
+    }
+
+    public void useConsumable(Consumables targetConsumable, PartyMembers targetPartyMember){
+        if(!Bag.getConsumableList().contains(targetConsumable)){
             return;
         }
 
@@ -139,12 +145,10 @@ public class PartyMembers extends Entity {
             return;
         }
 
-        Consumables consumable = Bag.getConsumableList().get(targetConsumableName);
+        targetPartyMember.setCurrentHP(healthCalculation(targetConsumable.getRestoredHP(), targetPartyMember));
+        targetPartyMember.setCurrentSP(spCalculation(targetConsumable.getRestoredSP(), targetPartyMember));
 
-        targetPartyMember.setCurrentHP(healthCalculation(consumable.getRestoredHP(), targetPartyMember));
-        targetPartyMember.setCurrentSP(spCalculation(consumable.getRestoredSP(), targetPartyMember));
-
-        Bag.getConsumableList().remove(targetConsumableName);
+        Bag.getConsumableList().remove(targetConsumable);
     }
 
     @Override
@@ -160,6 +164,7 @@ public class PartyMembers extends Entity {
         int listNumber = 1;
         for(Entity entity: opposingParty.getPartyList()){
             System.out.printf("%d. %s \n", listNumber, entity.getName());
+            listNumber++;
         }
         System.out.println("Which entity do you want to attack? Input the number beside the entities' name");
         Scanner sc = new Scanner(System.in);
