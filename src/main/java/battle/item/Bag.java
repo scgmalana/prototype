@@ -25,7 +25,7 @@ public class Bag {
          */
     }
 
-    public void pickUpItem(Item targetItem){
+    public static void pickUpItem(Item targetItem){
         Bag.itemList.add(targetItem);
 
         if(targetItem instanceof Equipment){
