@@ -14,8 +14,8 @@ import overworld.math.Matrix4f;
 import overworld.level.*;
 
 public class Main implements Runnable{
-    private int width = 1032;
-    private int height = 1240;
+    private int width = 1260;
+    private int height = 700;
 
     private Thread thread;
     private boolean running = false;
@@ -57,14 +57,39 @@ public class Main implements Runnable{
         Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
         Shader.BG.setUniform1f("tex", 0);
 
+        Shader.BOX.setUniformMat4f("pr_matrix", pr_matrix);
+        Shader.BOX.setUniform1f("tex", 0);
+
         level = new Level();
     }
 
     public void run(){
         init();
+
+        long lastTime = System.nanoTime();
+        long timer = System.currentTimeMillis();
+        double delta = 0.0;
+        double ns = 1000000000.0 / 60.0;
+        int updates = 0;
+        int frames = 0;
+
         while(running){
-            update();
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while(delta >= 1.0){
+                update();                
+                updates++;
+                delta --;
+            }
             render();
+            frames++;
+            if(System.currentTimeMillis() - timer > 1000){
+                timer += 1000;
+                System.out.println(updates + " ups, " + frames + " fps");
+                updates = 0;
+                frames = 0;
+            }
 
             if(glfwWindowShouldClose(window)){
                 running = false;
@@ -74,6 +99,7 @@ public class Main implements Runnable{
 
     private void update(){
         glfwPollEvents();
+        level.update();
     }
 
     private void render(){

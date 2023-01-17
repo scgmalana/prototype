@@ -11,6 +11,12 @@ public class VertexArray {
 
     private int count;
     private int vao, vbo, ibo, tbo;
+    /*
+     * vao = vertex array object
+     * vbo = vertex buffer object
+     * ibo = index buffer object
+     * tbo = texture buffer object
+     */
     
     public VertexArray(float[] vertices, byte[] indices, float[] textureCoordinates){
         count = indices.length;

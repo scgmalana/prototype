@@ -17,7 +17,7 @@ public class Shader {
     public static final int VERTEX_ATTRIB = 0;
     public static final int TCOORD_ATTRIB = 1;
 
-    public static Shader BG;
+    public static Shader BG, BOX;
 
     private boolean enabled = false;
     
@@ -31,6 +31,7 @@ public class Shader {
 
     public static void loadAll(){
         BG = new Shader("prototype/shaders/bg.vert", "prototype/shaders/bg.frag");
+        BOX =  new Shader("prototype/shaders/box.vert", "prototype/shaders/box.frag");
     }
 
     public int getUniform(String name){

@@ -7,6 +7,8 @@ public class Level {
     private VertexArray background;
     private Texture bgTexture; 
 
+    private Box box;
+
     public Level(){
         float[] vertices = new float[]{
             //which corners does it reach essentially
@@ -31,6 +33,12 @@ public class Level {
 
         background = new VertexArray(vertices, indices, tcs);
         bgTexture = new Texture("prototype/res/bun_is_me_fr.jpg");
+
+        box = new Box();
+    }
+
+    public void update(){
+        box.update();
     }
     
     public void render(){
@@ -39,5 +47,7 @@ public class Level {
         background.render();
         Shader.BG.disable();
         bgTexture.unbind();
+
+        box.render();
     }
 }

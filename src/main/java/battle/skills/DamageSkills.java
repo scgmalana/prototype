@@ -21,7 +21,7 @@ public class DamageSkills extends Skills{
         this.defenseMultiplier = defenseMultiplier;
     }
 
-    public DamageSkills(String name, String description, double damageMultiplier, double defenseMultiplier, double attackModifier, double defenseModifier, double speedModifier, boolean isAOE) {
+    public DamageSkills(String name, String description, double damageMultiplier, double defenseMultiplier, double attackModifier, double defenseModifier, double speedModifier, boolean isAOE){
         super(name, description, attackModifier, defenseModifier, speedModifier, isAOE);
         this.damageMultiplier = damageMultiplier;
         this.defenseMultiplier = defenseMultiplier;
