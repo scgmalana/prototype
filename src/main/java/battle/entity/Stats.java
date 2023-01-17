@@ -1,11 +1,13 @@
 package battle.entity;
 
 public class Stats {
-    private int maxHP;
-    private int maxSP;
-    private int attack;
-    private int defense;
-    private int speed;
+    public int maxHP;
+    public int maxSP;
+    public int attack;
+    public int physicalAttack;
+    public int magicalAttack;
+    public int defense;
+    public int speed;
     
     public Stats(int maxHP, int maxSP, int attack, int defense, int speed){
         this.maxHP = maxHP;
