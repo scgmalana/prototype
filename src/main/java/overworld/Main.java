@@ -7,15 +7,17 @@ import static org.lwjgl.opengl.GL13.*;
 
 import org.lwjgl.opengl.*;
 import org.lwjgl.glfw.GLFWVidMode;
+import java.math.*;
 
 import overworld.Input.Input;
+import overworld.graphics.*;
 import overworld.graphics.Shader;
 import overworld.math.Matrix4f;
 import overworld.level.*;
 
 public class Main implements Runnable{
     private int width = 1260;
-    private int height = 700;
+    private int height = width / 16 * 9;
 
     private Thread thread;
     private boolean running = false;
@@ -23,6 +25,8 @@ public class Main implements Runnable{
     private long window;
 
     private Level level;
+
+    private Screen screen = new Screen(width, height);
 
     public void start(){
         running = true;
@@ -72,6 +76,7 @@ public class Main implements Runnable{
         double ns = 1000000000.0 / 60.0;
         int updates = 0;
         int frames = 0;
+        int runtime = 0;
 
         while(running){
             long now = System.nanoTime();
@@ -85,8 +90,9 @@ public class Main implements Runnable{
             render();
             frames++;
             if(System.currentTimeMillis() - timer > 1000){
+                runtime++;
                 timer += 1000;
-                System.out.println(updates + " ups, " + frames + " fps");
+                System.out.println(updates + " ups, " + frames + " fps, " + convertRuntime(runtime) + " total runtime");
                 updates = 0;
                 frames = 0;
             }
@@ -110,6 +116,18 @@ public class Main implements Runnable{
             System.out.println(error);
         }
         glfwSwapBuffers(window);
+    }
+
+    private String convertRuntime(int runtime){
+        int runtimeSeconds = (int) Math.floor((double)((runtime % 3600) % 60));
+        int runtimeMinutes = (int) Math.floor((double)((runtime % 3600) / 60));
+        int runtimeHours = (int) Math.floor((double)(runtime / 3600));
+        String runSeconds = Integer.toString(runtimeSeconds);
+        String runMinute = Integer.toString(runtimeMinutes);
+        String runHours = Integer.toString(runtimeHours);
+
+
+        return runHours + ":" + runMinute + ":" + runSeconds;
     }
 
     public static void main(String[] args){
